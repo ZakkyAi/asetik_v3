@@ -19,8 +19,15 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'age',
+        'divisi',
         'email',
+        'description',
+        'photo',
         'password',
+        'username',
+        'badge',
+        'level',
     ];
 
     /**
@@ -41,8 +48,23 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get the records for the user.
+     */
+    public function records()
+    {
+        return $this->hasMany(Record::class, 'id_users');
+    }
+
+    /**
+     * Get the repairs for the user.
+     */
+    public function repairs()
+    {
+        return $this->hasMany(Repair::class, 'id_user');
     }
 }
