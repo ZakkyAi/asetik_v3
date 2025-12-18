@@ -34,6 +34,14 @@
         .badge-fixing { background: #ff9800; color: white; }
         .badge-decline { background: #999; color: white; }
         .actions { display: flex; gap: 10px; margin-top: 30px; }
+        .photos-section { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; padding: 40px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 12px; margin-bottom: 30px; }
+        .photo-card { text-align: center; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .user-photo-large { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; border: 5px solid #667eea; box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4); margin-bottom: 15px; }
+        .product-photo-large { width: 200px; height: 200px; object-fit: contain; border-radius: 12px; border: 5px solid #667eea; box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4); margin-bottom: 15px; background: white; }
+        .default-avatar-large { width: 180px; height: 180px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 70px; box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4); margin-bottom: 15px; }
+        .default-product-large { width: 200px; height: 200px; border-radius: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; display: inline-flex; align-items: center; justify-content: center; font-size: 80px; box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4); margin-bottom: 15px; }
+        .photo-label { font-weight: 700; color: #333; font-size: 16px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        .photo-name { font-size: 18px; color: #667eea; font-weight: 600; }
     </style>
 </head>
 <body>
@@ -64,10 +72,32 @@
         </div>
 
         <div class="card">
-            <div class="detail-row">
-                <div class="detail-label">Record ID:</div>
-                <div class="detail-value">{{ $record->id_records }}</div>
+            <div class="photos-section">
+                <div class="photo-card">
+                    <div class="photo-label">👤 User</div>
+                    @if($record->user && $record->user->photo)
+                        <img src="{{ asset($record->user->photo) }}" alt="{{ $record->user->name }}" class="user-photo-large">
+                    @else
+                        <div class="default-avatar-large">
+                            {{ $record->user ? strtoupper(substr($record->user->name, 0, 1)) : '?' }}
+                        </div>
+                    @endif
+                    <div class="photo-name">{{ $record->user ? $record->user->name : 'N/A' }}</div>
+                </div>
+                
+                <div class="photo-card">
+                    <div class="photo-label">📦 Product</div>
+                    @if($record->product && $record->product->photo)
+                        <img src="{{ asset($record->product->photo) }}" alt="{{ $record->product->name }}" class="product-photo-large">
+                    @else
+                        <div class="default-product-large">
+                            📦
+                        </div>
+                    @endif
+                    <div class="photo-name">{{ $record->product ? $record->product->name : 'N/A' }}</div>
+                </div>
             </div>
+
             <div class="detail-row">
                 <div class="detail-label">User:</div>
                 <div class="detail-value"><strong>{{ $record->user ? $record->user->name : 'N/A' }}</strong></div>

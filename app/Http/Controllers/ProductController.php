@@ -31,9 +31,17 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:100',
-            'photo' => 'required|string|max:255',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'description' => 'required|string',
         ]);
+        
+        // Handle photo upload
+        if ($request->hasFile('photo')) {
+            $photo = $request->file('photo');
+            $photoName = time() . '_' . $photo->getClientOriginalName();
+            $photo->move(public_path('uploads/products'), $photoName);
+            $validated['photo'] = 'uploads/products/' . $photoName;
+        }
         
         Product::create($validated);
 
@@ -67,9 +75,22 @@ class ProductController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:100',
-            'photo' => 'required|string|max:255',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'description' => 'required|string',
         ]);
+
+        // Handle photo upload
+        if ($request->hasFile('photo')) {
+            // Delete old photo if exists
+            if ($product->photo && file_exists(public_path($product->photo))) {
+                unlink(public_path($product->photo));
+            }
+            
+            $photo = $request->file('photo');
+            $photoName = time() . '_' . $photo->getClientOriginalName();
+            $photo->move(public_path('uploads/products'), $photoName);
+            $validated['photo'] = 'uploads/products/' . $photoName;
+        }
 
         $product->update($validated);
 

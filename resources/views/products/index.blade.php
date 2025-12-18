@@ -33,6 +33,8 @@
         .btn-edit { background: #4facfe; }
         .btn-delete { background: #f5576c; }
         .btn-view { background: #43e97b; }
+        .product-image { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; border: 2px solid #e0e0e0; }
+        .default-product-image { width: 60px; height: 60px; border-radius: 8px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 24px; }
     </style>
 </head>
 <body>
@@ -81,20 +83,28 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Name</th>
+                            <th>No</th>
                             <th>Photo</th>
+                            <th>Name</th>
                             <th>Description</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($products as $product)
+                        @foreach($products as $index => $product)
                         <tr>
-                            <td>{{ $product->id }}</td>
+                            <td>{{ $index + 1 }}</td>
+                            <td>
+                                @if($product->photo)
+                                    <img src="{{ asset($product->photo) }}" alt="{{ $product->name }}" class="product-image">
+                                @else
+                                    <div class="default-product-image">
+                                        📦
+                                    </div>
+                                @endif
+                            </td>
                             <td><strong>{{ $product->name }}</strong></td>
-                            <td>{{ $product->photo }}</td>
-                            <td>{{ $product->description }}</td>
+                            <td>{{ Str::limit($product->description, 50) }}</td>
                             <td>
                                 <div class="actions">
                                     <a href="{{ route('products.show', $product->id) }}" class="btn btn-sm btn-view">View</a>

@@ -209,6 +209,33 @@
             font-size: 60px;
             margin-bottom: 20px;
         }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e0e0e0;
+        }
+
+        .default-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .user-info-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
     </style>
 </head>
 <body>
@@ -259,7 +286,8 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>No</th>
+                            <th>Photo</th>
                             <th>Name</th>
                             <th>Username</th>
                             <th>Email</th>
@@ -271,9 +299,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($users as $user)
+                        @foreach($users as $index => $user)
                         <tr>
-                            <td>{{ $user->id }}</td>
+                            <td>{{ $index + 1 }}</td>
+                            <td>
+                                @if($user->photo)
+                                    <img src="{{ asset($user->photo) }}" alt="{{ $user->name }}" class="user-avatar">
+                                @else
+                                    <div class="default-avatar">
+                                        {{ strtoupper(substr($user->name, 0, 1)) }}
+                                    </div>
+                                @endif
+                            </td>
                             <td><strong>{{ $user->name }}</strong></td>
                             <td>{{ $user->username }}</td>
                             <td>{{ $user->email }}</td>

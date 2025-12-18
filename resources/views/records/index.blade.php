@@ -38,6 +38,8 @@
         .btn-edit { background: #4facfe; }
         .btn-delete { background: #f5576c; }
         .btn-view { background: #43e97b; }
+        .product-image { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; border: 2px solid #e0e0e0; }
+        .default-product-image { width: 50px; height: 50px; border-radius: 8px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; display: inline-flex; align-items: center; justify-content: center; font-size: 20px; }
     </style>
 </head>
 <body>
@@ -86,7 +88,7 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>No</th>
                             <th>User</th>
                             <th>Product</th>
                             <th>Status</th>
@@ -98,9 +100,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($records as $record)
+                        @foreach($records as $index => $record)
                         <tr>
-                            <td>{{ $record->id_records }}</td>
+                            <td>{{ $index + 1 }}</td>
                             <td>{{ $record->user ? $record->user->name : 'N/A' }}</td>
                             <td>{{ $record->product ? $record->product->name : 'N/A' }}</td>
                             <td>

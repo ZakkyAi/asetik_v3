@@ -30,6 +30,9 @@
         .badge-admin { background: #ffd700; color: #333; }
         .badge-user { background: #e0e0e0; color: #666; }
         .actions { display: flex; gap: 10px; margin-top: 30px; }
+        .user-photo-section { text-align: center; padding: 30px 0; border-bottom: 2px solid #f0f0f0; margin-bottom: 20px; }
+        .user-photo-large { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid #667eea; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); }
+        .default-avatar-large { width: 150px; height: 150px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 60px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); }
     </style>
 </head>
 <body>
@@ -60,21 +63,21 @@
         </div>
 
         <div class="card">
-            <div class="detail-row">
-                <div class="detail-label">ID:</div>
-                <div class="detail-value">{{ $user->id }}</div>
+            <div class="user-photo-section">
+                @if($user->photo)
+                    <img src="{{ asset($user->photo) }}" alt="{{ $user->name }}" class="user-photo-large">
+                @else
+                    <div class="default-avatar-large">
+                        {{ strtoupper(substr($user->name, 0, 1)) }}
+                    </div>
+                @endif
+                <h2 style="margin-top: 20px; color: #333;">{{ $user->name }}</h2>
+                <p style="color: #666; margin-top: 5px;">{{ $user->email }}</p>
             </div>
-            <div class="detail-row">
-                <div class="detail-label">Name:</div>
-                <div class="detail-value"><strong>{{ $user->name }}</strong></div>
-            </div>
+
             <div class="detail-row">
                 <div class="detail-label">Username:</div>
                 <div class="detail-value">{{ $user->username }}</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">Email:</div>
-                <div class="detail-value">{{ $user->email }}</div>
             </div>
             <div class="detail-row">
                 <div class="detail-label">Age:</div>
@@ -99,10 +102,6 @@
                         {{ ucfirst($user->level) }}
                     </span>
                 </div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">Photo:</div>
-                <div class="detail-value">{{ $user->photo ?? 'N/A' }}</div>
             </div>
             <div class="detail-row">
                 <div class="detail-label">Created At:</div>

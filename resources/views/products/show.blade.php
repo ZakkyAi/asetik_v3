@@ -27,6 +27,9 @@
         .detail-label { font-weight: 600; color: #666; width: 200px; }
         .detail-value { color: #333; flex: 1; }
         .actions { display: flex; gap: 10px; margin-top: 30px; }
+        .product-photo-section { text-align: center; padding: 30px 0; border-bottom: 2px solid #f0f0f0; margin-bottom: 20px; }
+        .product-photo-large { max-width: 300px; max-height: 300px; object-fit: contain; border-radius: 12px; border: 4px solid #667eea; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); }
+        .default-product-large { width: 200px; height: 200px; border-radius: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; display: inline-flex; align-items: center; justify-content: center; font-size: 80px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); }
     </style>
 </head>
 <body>
@@ -57,18 +60,17 @@
         </div>
 
         <div class="card">
-            <div class="detail-row">
-                <div class="detail-label">ID:</div>
-                <div class="detail-value">{{ $product->id }}</div>
+            <div class="product-photo-section">
+                @if($product->photo)
+                    <img src="{{ asset($product->photo) }}" alt="{{ $product->name }}" class="product-photo-large">
+                @else
+                    <div class="default-product-large">
+                        📦
+                    </div>
+                @endif
+                <h2 style="margin-top: 20px; color: #333;">{{ $product->name }}</h2>
             </div>
-            <div class="detail-row">
-                <div class="detail-label">Name:</div>
-                <div class="detail-value"><strong>{{ $product->name }}</strong></div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">Photo:</div>
-                <div class="detail-value">{{ $product->photo }}</div>
-            </div>
+
             <div class="detail-row">
                 <div class="detail-label">Description:</div>
                 <div class="detail-value">{{ $product->description }}</div>

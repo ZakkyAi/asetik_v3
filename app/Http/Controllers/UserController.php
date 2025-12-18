@@ -39,9 +39,18 @@ class UserController extends Controller
             'description' => 'nullable|string',
             'badge' => 'nullable|string|max:30',
             'level' => 'required|in:admin,normal_user',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
         ]);
 
         $validated['password'] = bcrypt($validated['password']);
+        
+        // Handle photo upload
+        if ($request->hasFile('photo')) {
+            $photo = $request->file('photo');
+            $photoName = time() . '_' . $photo->getClientOriginalName();
+            $photo->move(public_path('uploads/users'), $photoName);
+            $validated['photo'] = 'uploads/users/' . $photoName;
+        }
         
         User::create($validated);
 
@@ -82,10 +91,24 @@ class UserController extends Controller
             'description' => 'nullable|string',
             'badge' => 'nullable|string|max:30',
             'level' => 'required|in:admin,normal_user',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
         ]);
 
         if ($request->filled('password')) {
             $validated['password'] = bcrypt($request->password);
+        }
+
+        // Handle photo upload
+        if ($request->hasFile('photo')) {
+            // Delete old photo if exists
+            if ($user->photo && file_exists(public_path($user->photo))) {
+                unlink(public_path($user->photo));
+            }
+            
+            $photo = $request->file('photo');
+            $photoName = time() . '_' . $photo->getClientOriginalName();
+            $photo->move(public_path('uploads/users'), $photoName);
+            $validated['photo'] = 'uploads/users/' . $photoName;
         }
 
         $user->update($validated);

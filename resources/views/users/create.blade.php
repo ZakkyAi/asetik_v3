@@ -33,6 +33,10 @@
         .form-actions { display: flex; gap: 10px; margin-top: 30px; }
         select.form-control { cursor: pointer; }
         textarea.form-control { min-height: 100px; resize: vertical; }
+        .photo-preview { margin-top: 15px; max-width: 200px; border-radius: 8px; border: 2px solid #e0e0e0; display: none; }
+        .photo-upload-label { display: inline-block; padding: 10px 20px; background: #667eea; color: white; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
+        .photo-upload-label:hover { background: #5568d3; transform: translateY(-2px); }
+        #photo { display: none; }
     </style>
 </head>
 <body>
@@ -74,8 +78,19 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('users.store') }}">
+            <form method="POST" action="{{ route('users.store') }}" enctype="multipart/form-data">
                 @csrf
+
+                <div class="form-group">
+                    <label for="photo">Profile Photo</label>
+                    <label for="photo" class="photo-upload-label">📷 Choose Photo</label>
+                    <input type="file" id="photo" name="photo" accept="image/*" onchange="previewPhoto(event)">
+                    <img id="photoPreview" class="photo-preview" alt="Photo preview">
+                    <small style="display: block; margin-top: 8px; color: #666;">Max size: 2MB. Formats: JPG, PNG, GIF</small>
+                    @error('photo')
+                        <span class="error-message">{{ $message }}</span>
+                    @enderror
+                </div>
 
                 <div class="form-group">
                     <label for="name">Name *</label>
@@ -159,5 +174,21 @@
             </form>
         </div>
     </div>
+
+    <script>
+        function previewPhoto(event) {
+            const preview = document.getElementById('photoPreview');
+            const file = event.target.files[0];
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
 </body>
 </html>

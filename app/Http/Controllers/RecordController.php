@@ -14,7 +14,18 @@ class RecordController extends Controller
      */
     public function index()
     {
-        $records = Record::with(['user', 'product'])->orderBy('id_records', 'desc')->get();
+        // Check user role and filter records accordingly
+        if (auth()->user()->level === 'admin') {
+            // Admins can see all records
+            $records = Record::with(['user', 'product'])->orderBy('id_records', 'desc')->get();
+        } else {
+            // Normal users can only see their own records
+            $records = Record::with(['user', 'product'])
+                ->where('id_users', auth()->id())
+                ->orderBy('id_records', 'desc')
+                ->get();
+        }
+        
         return view('records.index', compact('records'));
     }
 
@@ -53,6 +64,12 @@ class RecordController extends Controller
     public function show(string $id)
     {
         $record = Record::with(['user', 'product'])->findOrFail($id);
+        
+        // Check if normal user is trying to view someone else's record
+        if (auth()->user()->level !== 'admin' && $record->id_users !== auth()->id()) {
+            abort(403, 'Unauthorized access to this record.');
+        }
+        
         return view('records.show', compact('record'));
     }
 
@@ -62,6 +79,12 @@ class RecordController extends Controller
     public function edit(string $id)
     {
         $record = Record::findOrFail($id);
+        
+        // Check if normal user is trying to edit someone else's record
+        if (auth()->user()->level !== 'admin' && $record->id_users !== auth()->id()) {
+            abort(403, 'Unauthorized access to this record.');
+        }
+        
         $users = User::orderBy('name')->get();
         $products = Product::orderBy('name')->get();
         return view('records.edit', compact('record', 'users', 'products'));
@@ -73,6 +96,11 @@ class RecordController extends Controller
     public function update(Request $request, string $id)
     {
         $record = Record::findOrFail($id);
+        
+        // Check if normal user is trying to update someone else's record
+        if (auth()->user()->level !== 'admin' && $record->id_users !== auth()->id()) {
+            abort(403, 'Unauthorized access to this record.');
+        }
 
         $validated = $request->validate([
             'id_users' => 'required|exists:users,id',
@@ -94,6 +122,11 @@ class RecordController extends Controller
     public function destroy(string $id)
     {
         $record = Record::findOrFail($id);
+        
+        // Check if normal user is trying to delete someone else's record
+        if (auth()->user()->level !== 'admin' && $record->id_users !== auth()->id()) {
+            abort(403, 'Unauthorized access to this record.');
+        }
 
         // Check if record has any repairs
         if ($record->repairs()->count() > 0) {

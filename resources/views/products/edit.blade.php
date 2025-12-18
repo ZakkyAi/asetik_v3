@@ -32,6 +32,10 @@
         .alert-danger { background: #fee; color: #c33; border: 1px solid #fcc; }
         .form-actions { display: flex; gap: 10px; margin-top: 30px; }
         textarea.form-control { min-height: 100px; resize: vertical; }
+        .photo-preview { margin-top: 15px; max-width: 200px; border-radius: 8px; border: 2px solid #e0e0e0; }
+        .photo-upload-label { display: inline-block; padding: 10px 20px; background: #667eea; color: white; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
+        .photo-upload-label:hover { background: #5568d3; transform: translateY(-2px); }
+        #photo { display: none; }
     </style>
 </head>
 <body>
@@ -73,7 +77,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('products.update', $product->id) }}">
+            <form method="POST" action="{{ route('products.update', $product->id) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -86,8 +90,17 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="photo">Photo Filename *</label>
-                    <input type="text" id="photo" name="photo" class="form-control @error('photo') error @enderror" value="{{ old('photo', $product->photo) }}" required placeholder="e.g., product.jpg">
+                    <label for="photo">Product Photo</label>
+                    @if($product->photo)
+                        <div style="margin-bottom: 10px;">
+                            <img src="{{ asset($product->photo) }}" alt="Current photo" class="photo-preview" style="display: block;">
+                            <small style="color: #666;">Current photo</small>
+                        </div>
+                    @endif
+                    <label for="photo" class="photo-upload-label">📷 Change Photo</label>
+                    <input type="file" id="photo" name="photo" accept="image/*" onchange="previewPhoto(event)">
+                    <img id="photoPreview" class="photo-preview" alt="Photo preview" style="display: none;">
+                    <small style="display: block; margin-top: 8px; color: #666;">Max size: 2MB. Formats: JPG, PNG, GIF</small>
                     @error('photo')
                         <span class="error-message">{{ $message }}</span>
                     @enderror
@@ -108,5 +121,21 @@
             </form>
         </div>
     </div>
+
+    <script>
+        function previewPhoto(event) {
+            const preview = document.getElementById('photoPreview');
+            const file = event.target.files[0];
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
 </body>
 </html>

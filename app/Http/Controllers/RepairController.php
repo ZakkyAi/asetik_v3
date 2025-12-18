@@ -14,7 +14,20 @@ class RepairController extends Controller
      */
     public function index()
     {
-        $repairs = Repair::with(['user', 'record'])->orderBy('id_repair', 'desc')->get();
+        // Check user role and filter repairs accordingly
+        if (auth()->user()->level === 'admin') {
+            // Admins can see all repairs
+            $repairs = Repair::with(['user', 'record'])->orderBy('id_repair', 'desc')->get();
+        } else {
+            // Normal users can only see repairs for their own records
+            $repairs = Repair::with(['user', 'record'])
+                ->whereHas('record', function($query) {
+                    $query->where('id_users', auth()->id());
+                })
+                ->orderBy('id_repair', 'desc')
+                ->get();
+        }
+        
         return view('repairs.index', compact('repairs'));
     }
 
@@ -50,6 +63,12 @@ class RepairController extends Controller
     public function show(string $id)
     {
         $repair = Repair::with(['user', 'record.user', 'record.product'])->findOrFail($id);
+        
+        // Check if normal user is trying to view a repair for someone else's record
+        if (auth()->user()->level !== 'admin' && $repair->record->id_users !== auth()->id()) {
+            abort(403, 'Unauthorized access to this repair.');
+        }
+        
         return view('repairs.show', compact('repair'));
     }
 
