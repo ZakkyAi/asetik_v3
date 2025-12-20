@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content-width, initial-scale=1.0">
     <title>Dashboard - Asetik</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -19,24 +19,24 @@
     @include('partials.navbar')
     
     <div class="container">
-        <h1>My Dashboard</h1>
+        <h1>Dashboard</h1>
         
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-label">My Items</div>
-                <div class="stat-value">{{ $myRecords }}</div>
+                <div class="stat-label">Total Users</div>
+                <div class="stat-value">{{ \App\Models\User::count() }}</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">Good Condition</div>
-                <div class="stat-value">{{ $goodItems }}</div>
+                <div class="stat-label">Total Products</div>
+                <div class="stat-value">{{ \App\Models\Product::count() }}</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">Broken Items</div>
-                <div class="stat-value">{{ $brokenItems }}</div>
+                <div class="stat-label">Total Records</div>
+                <div class="stat-value">{{ \App\Models\Record::count() }}</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">In Repair</div>
-                <div class="stat-value">{{ $repairingItems }}</div>
+                <div class="stat-label">Total Repairs</div>
+                <div class="stat-value">{{ \App\Models\Repair::count() }}</div>
             </div>
         </div>
     </div>

@@ -1,0 +1,157 @@
+/* Ultra-minimal black and white design - Override all colors */
+
+/* Remove all gradients and colors */
+* {
+    background-image: none !important;
+}
+
+/* Force all backgrounds to white */
+body {
+    background: #fff !important;
+}
+
+/* Force all text to black */
+body,
+p,
+span,
+div,
+td,
+th,
+label,
+input,
+textarea,
+select,
+button,
+a {
+    color: #000 !important;
+}
+
+/* Force all buttons to black and white */
+.btn,
+button,
+[type="submit"],
+[type="button"] {
+    background: #fff !important;
+    color: #000 !important;
+    border: 1px solid #000 !important;
+}
+
+.btn-view,
+.btn-edit,
+.btn-delete,
+.btn-sm,
+.btn-secondary {
+    background: #fff !important;
+    color: #000 !important;
+    border: 1px solid #000 !important;
+}
+
+/* Force all badges to black and white */
+.badge,
+.badge-admin,
+.badge-user,
+.badge-good,
+.badge-broken,
+.badge-fixing,
+.badge-pending {
+    background: #fff !important;
+    color: #000 !important;
+    border: 1px solid #000 !important;
+}
+
+/* Force all cards/containers to white with black border */
+.card,
+.stat-card,
+.table-container,
+.welcome-section {
+    background: #fff !important;
+    border: 1px solid #000 !important;
+    box-shadow: none !important;
+}
+
+/* Force ALL borders to black - VERY IMPORTANT */
+*,
+*::before,
+*::after {
+    border-color: #000 !important;
+}
+
+table,
+tr,
+td,
+th,
+input,
+textarea,
+select,
+img {
+    border-color: #000 !important;
+}
+
+/* Force specific elements */
+table {
+    border: 1px solid #000 !important;
+}
+
+td,
+th {
+    border: 1px solid #000 !important;
+}
+
+img {
+    border: 1px solid #000 !important;
+}
+
+.user-photo,
+.product-photo {
+    border: 1px solid #000 !important;
+}
+
+/* Remove all hover effects and transitions */
+* {
+    transition: none !important;
+    transform: none !important;
+}
+
+*:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Force navbar to black and white */
+.navbar {
+    background: #fff !important;
+    border-bottom: 1px solid #000 !important;
+}
+
+/* Force all links to black */
+a {
+    color: #000 !important;
+    text-decoration: none !important;
+}
+
+a:hover {
+    text-decoration: underline !important;
+}
+
+/* Remove avatar gradients and force black borders */
+.user-avatar,
+.default-avatar {
+    background: #fff !important;
+    border: 1px solid #000 !important;
+    color: #000 !important;
+}
+
+/* Force all images to be square with black borders */
+img,
+.user-avatar,
+.default-avatar,
+.product-photo,
+.user-photo {
+    border-radius: 0 !important;
+    border: 1px solid #000 !important;
+}
+
+/* Remove all rounded corners */
+* {
+    border-radius: 0 !important;
+}

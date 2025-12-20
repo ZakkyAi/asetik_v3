@@ -17,10 +17,10 @@ class RepairController extends Controller
         // Check user role and filter repairs accordingly
         if (auth()->user()->level === 'admin') {
             // Admins can see all repairs
-            $repairs = Repair::with(['user', 'record'])->orderBy('id_repair', 'desc')->get();
+            $repairs = Repair::with(['user', 'record.product'])->orderBy('id_repair', 'desc')->get();
         } else {
             // Normal users can only see repairs for their own records
-            $repairs = Repair::with(['user', 'record'])
+            $repairs = Repair::with(['user', 'record.product'])
                 ->whereHas('record', function($query) {
                     $query->where('id_users', auth()->id());
                 })
@@ -54,7 +54,7 @@ class RepairController extends Controller
         
         Repair::create($validated);
 
-        return redirect()->route('repairs.index')->with('success', 'Repair created successfully!');
+        return redirect()->route('admin.repairs.index')->with('success', 'Repair created successfully!');
     }
 
     /**
@@ -84,21 +84,20 @@ class RepairController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the repair status (admin only)
      */
     public function update(Request $request, string $id)
     {
-        $repair = Repair::findOrFail($id);
+        $repair = Repair::with('record')->findOrFail($id);
 
         $validated = $request->validate([
-            'id_user' => 'required|exists:users,id',
-            'id_record' => 'required|exists:records,id_records',
-            'note' => 'required|string',
+            'status' => 'required|in:broken,fixing,good',
         ]);
 
-        $repair->update($validated);
+        // Update the record status
+        $repair->record->update(['status' => $validated['status']]);
 
-        return redirect()->route('repairs.index')->with('success', 'Repair updated successfully!');
+        return redirect()->route('admin.repairs.index')->with('success', 'Repair status updated successfully!');
     }
 
     /**
@@ -109,6 +108,48 @@ class RepairController extends Controller
         $repair = Repair::findOrFail($id);
         $repair->delete();
 
-        return redirect()->route('repairs.index')->with('success', 'Repair deleted successfully!');
+        return redirect()->route('admin.repairs.index')->with('success', 'Repair deleted successfully!');
+    }
+    
+    /**
+     * Accept repair request - change status to fixing
+     */
+    public function accept(string $id)
+    {
+        $repair = Repair::with('record')->findOrFail($id);
+        
+        // Update record status to fixing
+        $repair->record->update(['status' => 'fixing']);
+        
+        return redirect()->route('admin.repairs.index')->with('success', 'Repair request accepted! Item is now being repaired.');
+    }
+    
+    /**
+     * Decline repair request - change status back to good
+     */
+    public function decline(string $id)
+    {
+        $repair = Repair::with('record')->findOrFail($id);
+        
+        // Update record status back to good
+        $repair->record->update(['status' => 'good']);
+        
+        // Optionally delete the repair request
+        $repair->delete();
+        
+        return redirect()->route('admin.repairs.index')->with('success', 'Repair request declined.');
+    }
+    
+    /**
+     * Mark repair as done - change status to good
+     */
+    public function done(string $id)
+    {
+        $repair = Repair::with('record')->findOrFail($id);
+        
+        // Update record status to good (completed)
+        $repair->record->update(['status' => 'good']);
+        
+        return redirect()->route('admin.repairs.index')->with('success', 'Repair completed! Item is ready for pickup.');
     }
 }

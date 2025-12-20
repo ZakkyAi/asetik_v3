@@ -54,7 +54,7 @@ class UserController extends Controller
         
         User::create($validated);
 
-        return redirect()->route('users.index')->with('success', 'User created successfully!');
+        return redirect()->route('admin.users.index')->with('success', 'User created successfully!');
     }
 
     /**
@@ -113,7 +113,7 @@ class UserController extends Controller
 
         $user->update($validated);
 
-        return redirect()->route('users.index')->with('success', 'User updated successfully!');
+        return redirect()->route('admin.users.index')->with('success', 'User updated successfully!');
     }
 
     /**
@@ -125,18 +125,18 @@ class UserController extends Controller
 
         // Check if user has any records
         if ($user->records()->count() > 0) {
-            return redirect()->route('users.index')
+            return redirect()->route('admin.users.index')
                 ->with('error', 'Cannot delete user "' . $user->name . '" because they have ' . $user->records()->count() . ' asset record(s). Please delete or reassign their records first.');
         }
 
         // Check if user has any repairs
         if ($user->repairs()->count() > 0) {
-            return redirect()->route('users.index')
+            return redirect()->route('admin.users.index')
                 ->with('error', 'Cannot delete user "' . $user->name . '" because they have ' . $user->repairs()->count() . ' repair(s). Please delete their repairs first.');
         }
 
         $user->delete();
 
-        return redirect()->route('users.index')->with('success', 'User deleted successfully!');
+        return redirect()->route('admin.users.index')->with('success', 'User deleted successfully!');
     }
 }

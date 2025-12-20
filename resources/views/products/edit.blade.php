@@ -6,48 +6,47 @@
     <title>Edit Product - Asetik</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; min-height: 100vh; }
-        .navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 0 30px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); position: sticky; top: 0; z-index: 100; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #fff; min-height: 100vh; }
+        .navbar { background: #fff; color: #000; padding: 0 30px;  position: sticky; top: 0; z-index: 100; }
         .navbar-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; height: 70px; }
-        .navbar-brand { font-size: 24px; font-weight: 700; display: flex; align-items: center; gap: 10px; text-decoration: none; color: white; }
+        .navbar-brand { font-size: 24px; font-weight: 700; display: flex; align-items: center; gap: 10px; text-decoration: none; color: #000; }
         .navbar-menu { display: flex; gap: 30px; align-items: center; }
-        .navbar-menu a { color: white; text-decoration: none; font-weight: 500; padding: 8px 16px; border-radius: 8px; }
+        .navbar-menu a { color: #000; text-decoration: none; font-weight: 500; padding: 8px 16px;  }
         .navbar-menu a:hover, .navbar-menu a.active { background: rgba(255, 255, 255, 0.2); }
         .user-info { display: flex; align-items: center; gap: 15px; }
-        .logout-btn { background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 8px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .logout-btn { background: rgba(255, 255, 255, 0.2); border: none; color: #000; padding: 8px 20px;  cursor: pointer; font-weight: 600; }
         .container { max-width: 900px; margin: 0 auto; padding: 30px; }
         .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .page-header h1 { font-size: 32px; color: #333; }
-        .btn { display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s; border: none; cursor: pointer; }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); }
-        .btn-secondary { background: #6c757d; }
-        .card { background: white; border-radius: 15px; padding: 40px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); }
+        .page-header h1 { font-size: 32px; color: #000; }
+        .btn { display: inline-block; padding: 12px 24px; background: #fff; color: #000; text-decoration: none;  font-weight: 600;  border: none; cursor: pointer; }
+        .btn:hover {   }
+        .btn-secondary { background: #fff; }
+        .card { background: white;  padding: 40px;  }
         .form-group { margin-bottom: 25px; }
-        .form-group label { display: block; margin-bottom: 8px; color: #333; font-weight: 600; font-size: 14px; }
-        .form-control { width: 100%; padding: 12px 16px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 15px; transition: all 0.3s ease; background: #f8f9fa; }
-        .form-control:focus { outline: none; border-color: #667eea; background: white; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
+        .form-group label { display: block; margin-bottom: 8px; color: #000; font-weight: 600; font-size: 14px; }
+        .form-control { width: 100%; padding: 12px 16px; border: 1px solid #000;  font-size: 15px;  background: #f8f9fa; }
+        .form-control:focus { outline: none; border-color: #000; background: white;  }
         .form-control.error { border-color: #e74c3c; background: #fff5f5; }
         .error-message { color: #e74c3c; font-size: 13px; margin-top: 6px; display: block; }
-        .alert { padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; }
-        .alert-danger { background: #fee; color: #c33; border: 1px solid #fcc; }
+        .alert { padding: 12px 16px;  margin-bottom: 20px; font-size: 14px; }
+        .alert-danger { background: #fee; color: #c33; border: 1px solid #000; }
         .form-actions { display: flex; gap: 10px; margin-top: 30px; }
         textarea.form-control { min-height: 100px; resize: vertical; }
-        .photo-preview { margin-top: 15px; max-width: 200px; border-radius: 8px; border: 2px solid #e0e0e0; }
-        .photo-upload-label { display: inline-block; padding: 10px 20px; background: #667eea; color: white; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
-        .photo-upload-label:hover { background: #5568d3; transform: translateY(-2px); }
+        .photo-preview { margin-top: 15px; max-width: 200px;  border: 1px solid #000; }
+        .photo-upload-label { display: inline-block; padding: 10px 20px; background: #fff; color: #000;  cursor: pointer;  }
+        .photo-upload-label:hover { background: #5568d3;  }
         #photo { display: none; }
     </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="navbar-content">
-            <a href="{{ route('dashboard') }}" class="navbar-brand">🔐 Asetik</a>
+            <a href="{{ route('dashboard') }}" class="navbar-brand">Asetik</a>
             <div class="navbar-menu">
                 <a href="{{ route('dashboard') }}">Dashboard</a>
-                <a href="{{ route('users.index') }}">Users</a>
-                <a href="{{ route('products.index') }}" class="active">Products</a>
-                <a href="{{ route('records.index') }}">Records</a>
-                <a href="{{ route('repairs.index') }}">Repairs</a>
+                <a href="{{ route('admin.users.index') }}">Users</a>
+                <a href="{{ route('admin.products.index') }}" class="active">Products</a>
+                <a href="{{ route('admin.records.index') }}">Records</a>
             </div>
             <div class="user-info">
                 <strong>{{ auth()->user()->name }}</strong>
@@ -61,8 +60,8 @@
 
     <div class="container">
         <div class="page-header">
-            <h1>✏️ Edit Product</h1>
-            <a href="{{ route('products.index') }}" class="btn btn-secondary">← Back to List</a>
+            <h1>Edit Product</h1>
+            <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">← Back to List</a>
         </div>
 
         <div class="card">
@@ -77,7 +76,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('products.update', $product->id) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('admin.products.update', $product->id) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -94,13 +93,13 @@
                     @if($product->photo)
                         <div style="margin-bottom: 10px;">
                             <img src="{{ asset($product->photo) }}" alt="Current photo" class="photo-preview" style="display: block;">
-                            <small style="color: #666;">Current photo</small>
+                            <small style="color: #000;">Current photo</small>
                         </div>
                     @endif
-                    <label for="photo" class="photo-upload-label">📷 Change Photo</label>
+                    <label for="photo" class="photo-upload-label">Change Photo</label>
                     <input type="file" id="photo" name="photo" accept="image/*" onchange="previewPhoto(event)">
                     <img id="photoPreview" class="photo-preview" alt="Photo preview" style="display: none;">
-                    <small style="display: block; margin-top: 8px; color: #666;">Max size: 2MB. Formats: JPG, PNG, GIF</small>
+                    <small style="display: block; margin-top: 8px; color: #000;">Max size: 2MB. Formats: JPG, PNG, GIF</small>
                     @error('photo')
                         <span class="error-message">{{ $message }}</span>
                     @enderror
@@ -115,8 +114,8 @@
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn">💾 Update Product</button>
-                    <a href="{{ route('products.index') }}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn">Update Product</button>
+                    <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">Cancel</a>
                 </div>
             </form>
         </div>

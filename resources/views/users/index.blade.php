@@ -13,15 +13,15 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f7fa;
+            background: #fff;
             min-height: 100vh;
         }
 
         .navbar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: #fff;
+            color: #000;
             padding: 0 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            
             position: sticky;
             top: 0;
             z-index: 100;
@@ -43,7 +43,7 @@
             align-items: center;
             gap: 10px;
             text-decoration: none;
-            color: white;
+            color: #000;
         }
 
         .navbar-menu {
@@ -53,12 +53,12 @@
         }
 
         .navbar-menu a {
-            color: white;
+            color: #000;
             text-decoration: none;
             font-weight: 500;
-            transition: opacity 0.3s;
+            
             padding: 8px 16px;
-            border-radius: 8px;
+            
         }
 
         .navbar-menu a:hover, .navbar-menu a.active {
@@ -74,12 +74,12 @@
         .logout-btn {
             background: rgba(255, 255, 255, 0.2);
             border: none;
-            color: white;
+            color: #000;
             padding: 8px 20px;
-            border-radius: 8px;
+            
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s;
+            
         }
 
         .logout-btn:hover {
@@ -101,32 +101,32 @@
 
         .page-header h1 {
             font-size: 32px;
-            color: #333;
+            color: #000;
         }
 
         .btn {
             display: inline-block;
             padding: 12px 24px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: #fff;
+            color: #000;
             text-decoration: none;
-            border-radius: 8px;
+            
             font-weight: 600;
-            transition: all 0.3s;
+            
             border: none;
             cursor: pointer;
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            
+            
         }
 
         .table-container {
             background: white;
-            border-radius: 15px;
+            
             padding: 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            
             overflow-x: auto;
         }
 
@@ -143,16 +143,16 @@
             padding: 15px;
             text-align: left;
             font-weight: 600;
-            color: #666;
-            text-transform: uppercase;
+            color: #000;
+            text-
             font-size: 12px;
             letter-spacing: 1px;
         }
 
         td {
             padding: 15px;
-            border-bottom: 1px solid #f0f0f0;
-            color: #333;
+            border-bottom: 1px solid #000;
+            color: #000;
         }
 
         tr:hover {
@@ -162,19 +162,19 @@
         .badge {
             display: inline-block;
             padding: 4px 12px;
-            border-radius: 20px;
+            
             font-size: 12px;
             font-weight: 600;
         }
 
         .badge-admin {
-            background: #ffd700;
-            color: #333;
+            background: #fff;
+            color: #000;
         }
 
         .badge-user {
             background: #e0e0e0;
-            color: #666;
+            color: #000;
         }
 
         .actions {
@@ -188,21 +188,21 @@
         }
 
         .btn-edit {
-            background: #4facfe;
+            background: #fff;
         }
 
         .btn-delete {
-            background: #f5576c;
+            background: #fff;
         }
 
         .btn-view {
-            background: #43e97b;
+            background: #fff;
         }
 
         .empty-state {
             text-align: center;
             padding: 60px 20px;
-            color: #999;
+            color: #000;
         }
 
         .empty-state-icon {
@@ -213,17 +213,17 @@
         .user-avatar {
             width: 40px;
             height: 40px;
-            border-radius: 50%;
+            
             object-fit: cover;
-            border: 2px solid #e0e0e0;
+            border: 1px solid #000;
         }
 
         .default-avatar {
             width: 40px;
             height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            
+            background: #fff;
+            color: #000;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -239,45 +239,25 @@
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="navbar-content">
-            <a href="{{ route('dashboard') }}" class="navbar-brand">
-                🔐 Asetik
-            </a>
-            <div class="navbar-menu">
-                <a href="{{ route('dashboard') }}">Dashboard</a>
-                <a href="{{ route('users.index') }}" class="active">Users</a>
-                <a href="{{ route('products.index') }}">Products</a>
-                <a href="{{ route('records.index') }}">Records</a>
-                <a href="{{ route('repairs.index') }}">Repairs</a>
-            </div>
-            <div class="user-info">
-                <strong>{{ auth()->user()->name }}</strong>
-                <form method="POST" action="{{ route('logout') }}" style="display: inline;">
-                    @csrf
-                    <button type="submit" class="logout-btn">Logout</button>
-                </form>
-            </div>
-        </div>
-    </nav>
+    @include('partials.navbar')
 
     <div class="container">
         <div class="page-header">
-            <h1>👥 Users Management</h1>
+            <h1>Users Management</h1>
             @if(auth()->user()->level === 'admin')
-                <a href="{{ route('users.create') }}" class="btn">➕ Add New User</a>
+                <a href="{{ route('admin.users.create') }}" class="btn">Add New User</a>
             @endif
         </div>
 
         @if(session('success'))
-            <div style="padding: 15px; background: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 8px; margin-bottom: 20px;">
-                ✅ {{ session('success') }}
+            <div style="padding: 15px; background: #d4edda; color: #155724; border: 1px solid #000;  margin-bottom: 20px;">
+                {{ session('success') }}
             </div>
         @endif
 
         @if(session('error'))
-            <div style="padding: 15px; background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 8px; margin-bottom: 20px;">
-                ❌ {{ session('error') }}
+            <div style="padding: 15px; background: #f8d7da; color: #721c24; border: 1px solid #000;  margin-bottom: 20px;">
+                {{ session('error') }}
             </div>
         @endif
 
@@ -324,10 +304,10 @@
                             </td>
                             <td>
                                 <div class="actions">
-                                    <a href="{{ route('users.show', $user->id) }}" class="btn btn-sm btn-view">View</a>
+                                    <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-sm btn-view">View</a>
                                     @if(auth()->user()->level === 'admin')
-                                        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-edit">Edit</a>
-                                        <form method="POST" action="{{ route('users.destroy', $user->id) }}" style="display: inline;">
+                                        <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-edit">Edit</a>
+                                        <form method="POST" action="{{ route('admin.users.destroy', $user->id) }}" style="display: inline;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-delete" onclick="return confirm('Are you sure?')">Delete</button>
@@ -341,7 +321,7 @@
                 </table>
             @else
                 <div class="empty-state">
-                    <div class="empty-state-icon">👤</div>
+                    <div class="empty-state-icon"></div>
                     <h3>No users found</h3>
                     <p>Start by adding your first user</p>
                 </div>

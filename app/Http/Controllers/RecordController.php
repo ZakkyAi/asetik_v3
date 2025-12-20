@@ -55,7 +55,7 @@ class RecordController extends Controller
         
         Record::create($validated);
 
-        return redirect()->route('records.index')->with('success', 'Record created successfully!');
+        return redirect()->route('admin.records.index')->with('success', 'Record created successfully!');
     }
 
     /**
@@ -113,7 +113,7 @@ class RecordController extends Controller
 
         $record->update($validated);
 
-        return redirect()->route('records.index')->with('success', 'Record updated successfully!');
+        return redirect()->route('admin.records.index')->with('success', 'Record updated successfully!');
     }
 
     /**
@@ -130,12 +130,12 @@ class RecordController extends Controller
 
         // Check if record has any repairs
         if ($record->repairs()->count() > 0) {
-            return redirect()->route('records.index')
+            return redirect()->route('admin.records.index')
                 ->with('error', 'Cannot delete record #' . $record->id_records . ' because it has ' . $record->repairs()->count() . ' repair(s). Please delete the repairs first.');
         }
 
         $record->delete();
 
-        return redirect()->route('records.index')->with('success', 'Record deleted successfully!');
+        return redirect()->route('admin.records.index')->with('success', 'Record deleted successfully!');
     }
 }

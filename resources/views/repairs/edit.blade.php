@@ -1,12 +1,110 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>Edit Repair</title>
-<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',sans-serif;background:#f5f7fa;min-height:100vh}.navbar{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:0 30px;box-shadow:0 2px 10px rgba(0,0,0,0.1);position:sticky;top:0;z-index:100}.navbar-content{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;height:70px}.navbar-brand{font-size:24px;font-weight:700;text-decoration:none;color:white}.navbar-menu{display:flex;gap:30px}.navbar-menu a{color:white;text-decoration:none;padding:8px 16px;border-radius:8px}.navbar-menu a:hover,.navbar-menu a.active{background:rgba(255,255,255,0.2)}.user-info{display:flex;align-items:center;gap:15px}.logout-btn{background:rgba(255,255,255,0.2);border:none;color:white;padding:8px 20px;border-radius:8px;cursor:pointer;font-weight:600}.container{max-width:900px;margin:0 auto;padding:30px}.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}.page-header h1{font-size:32px;color:#333}.btn{display:inline-block;padding:12px 24px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;text-decoration:none;border-radius:8px;font-weight:600;transition:all 0.3s;border:none;cursor:pointer}.btn:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(102,126,234,0.4)}.btn-secondary{background:#6c757d}.card{background:white;border-radius:15px;padding:40px;box-shadow:0 2px 10px rgba(0,0,0,0.05)}.form-group{margin-bottom:25px}.form-group label{display:block;margin-bottom:8px;color:#333;font-weight:600;font-size:14px}.form-control{width:100%;padding:12px 16px;border:2px solid #e0e0e0;border-radius:8px;font-size:15px;transition:all 0.3s;background:#f8f9fa}.form-control:focus{outline:none;border-color:#667eea;background:white;box-shadow:0 0 0 3px rgba(102,126,234,0.1)}.error-message{color:#e74c3c;font-size:13px;margin-top:6px}.form-actions{display:flex;gap:10px;margin-top:30px}select.form-control{cursor:pointer}textarea.form-control{min-height:100px;resize:vertical}</style>
-</head><body>
-<nav class="navbar"><div class="navbar-content"><a href="{{ route('dashboard') }}" class="navbar-brand">🔐 Asetik</a><div class="navbar-menu"><a href="{{ route('dashboard') }}">Dashboard</a><a href="{{ route('users.index') }}">Users</a><a href="{{ route('products.index') }}">Products</a><a href="{{ route('records.index') }}">Records</a><a href="{{ route('repairs.index') }}" class="active">Repairs</a></div><div class="user-info"><strong>{{ auth()->user()->name }}</strong><form method="POST" action="{{ route('logout') }}" style="display:inline">@csrf<button type="submit" class="logout-btn">Logout</button></form></div></div></nav>
-<div class="container"><div class="page-header"><h1>✏️ Edit Repair</h1><a href="{{ route('repairs.index') }}" class="btn btn-secondary">← Back</a></div>
-<div class="card"><form method="POST" action="{{ route('repairs.update',$repair->id_repair) }}">@csrf @method('PUT')
-<div class="form-group"><label for="id_user">User *</label><select id="id_user" name="id_user" class="form-control" required>@foreach($users as $user)<option value="{{ $user->id }}" {{ old('id_user',$repair->id_user)==$user->id?'selected':'' }}>{{ $user->name }} ({{ $user->username }})</option>@endforeach</select>@error('id_user')<span class="error-message">{{ $message }}</span>@enderror</div>
-<div class="form-group"><label for="id_record">Record *</label><select id="id_record" name="id_record" class="form-control" required>@foreach($records as $record)<option value="{{ $record->id_records }}" {{ old('id_record',$repair->id_record)==$record->id_records?'selected':'' }}>#{{ $record->id_records }} - {{ $record->product?$record->product->name:'N/A' }} ({{ $record->user?$record->user->name:'N/A' }})</option>@endforeach</select>@error('id_record')<span class="error-message">{{ $message }}</span>@enderror</div>
-<div class="form-group"><label for="note">Note *</label><textarea id="note" name="note" class="form-control" required>{{ old('note',$repair->note) }}</textarea>@error('note')<span class="error-message">{{ $message }}</span>@enderror</div>
-<div class="form-actions"><button type="submit" class="btn">💾 Update Repair</button><a href="{{ route('repairs.index') }}" class="btn btn-secondary">Cancel</a></div>
-</form></div></div></body></html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Repair Status - Asetik</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #fff; min-height: 100vh; }
+        .navbar { background: #fff; color: #000; padding: 0 30px;  position: sticky; top: 0; z-index: 100; }
+        .navbar-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; height: 70px; }
+        .navbar-brand { font-size: 24px; font-weight: 700; display: flex; align-items: center; gap: 10px; text-decoration: none; color: #000; }
+        .navbar-menu { display: flex; gap: 30px; align-items: center; }
+        .navbar-menu a { color: #000; text-decoration: none; font-weight: 500;  padding: 8px 16px;  }
+        .navbar-menu a:hover, .navbar-menu a.active { background: rgba(255, 255, 255, 0.2); }
+        .user-info { display: flex; align-items: center; gap: 15px; }
+        .user-avatar { width: 40px; height: 40px;  background: rgba(255, 255, 255, 0.2); display: flex; align-items: center; justify-content: center; font-size: 18px; overflow: hidden; }
+        .logout-btn { background: rgba(255, 255, 255, 0.2); border: none; color: #000; padding: 8px 20px;  cursor: pointer; font-weight: 600;  }
+        .logout-btn:hover { background: rgba(255, 255, 255, 0.3); }
+        .container { max-width: 800px; margin: 0 auto; padding: 30px; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .page-header h1 { font-size: 32px; color: #000; }
+        .btn { display: inline-block; padding: 12px 24px; background: #fff; color: #000; text-decoration: none;  font-weight: 600;  border: none; cursor: pointer; }
+        .btn:hover {   }
+        .btn-secondary { background: #fff; margin-left: 10px; }
+        .btn-secondary:hover { background: #5a6268; }
+        .card { background: white;  padding: 40px;  margin-bottom: 20px; }
+        .info-grid { display: grid; grid-template-columns: 150px 1fr; gap: 15px; margin-bottom: 30px; }
+        .info-label { font-weight: 600; color: #000; }
+        .info-value { color: #000; }
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; margin-bottom: 8px; color: #000; font-weight: 600; font-size: 14px; }
+        .form-control { width: 100%; padding: 12px 16px; border: 1px solid #000;  font-size: 15px;  background: #f8f9fa; }
+        .form-control:focus { outline: none; border-color: #000; background: white;  }
+        select.form-control { cursor: pointer; }
+        .badge { display: inline-block; padding: 6px 14px;  font-size: 12px; font-weight: 600; }
+        .badge-broken { background: #fff; color: #000; }
+        .badge-fixing { background: #fff; color: #000; }
+        .badge-good { background: #fff; color: #000; }
+    </style>
+</head>
+<body>
+    @include('partials.navbar')
+    
+    <div class="container">
+        <div class="page-header">
+            <h1>Update Repair Status</h1>
+            <a href="{{ route('admin.repairs.index') }}" class="btn btn-secondary">← Back</a>
+        </div>
+        
+        <div class="card">
+            <h2 style="margin-bottom: 20px; color: #000;">Repair Information</h2>
+            <div class="info-grid">
+                <div class="info-label">Repair ID:</div>
+                <div class="info-value">#{{ $repair->id_repair }}</div>
+                
+                <div class="info-label">User:</div>
+                <div class="info-value">{{ $repair->user ? $repair->user->name : 'N/A' }}</div>
+                
+                <div class="info-label">Product:</div>
+                <div class="info-value">{{ $repair->record && $repair->record->product ? $repair->record->product->name : 'N/A' }}</div>
+                
+                <div class="info-label">Serial No:</div>
+                <div class="info-value">{{ $repair->record ? $repair->record->no_serial : 'N/A' }}</div>
+                
+                <div class="info-label">Inventory No:</div>
+                <div class="info-value">{{ $repair->record ? $repair->record->no_inventaris : 'N/A' }}</div>
+                
+                <div class="info-label">Current Status:</div>
+                <div class="info-value">
+                    <span class="badge badge-{{ $repair->record->status }}">
+                        {{ ucfirst($repair->record->status) }}
+                    </span>
+                </div>
+                
+                <div class="info-label">Repair Note:</div>
+                <div class="info-value">{{ $repair->note }}</div>
+                
+                <div class="info-label">Submitted:</div>
+                <div class="info-value">{{ $repair->created_at ? \Carbon\Carbon::parse($repair->created_at)->format('d M Y H:i') : 'N/A' }}</div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2 style="margin-bottom: 20px; color: #000;">Update Status</h2>
+            <form method="POST" action="{{ route('admin.repairs.update', $repair->id_repair) }}">
+                @csrf
+                @method('PUT')
+                
+                <div class="form-group">
+                    <label for="status">Item Status *</label>
+                    <select id="status" name="status" class="form-control" required>
+                        <option value="broken" {{ $repair->record->status === 'broken' ? 'selected' : '' }}>Broken (Waiting to Start)</option>
+                        <option value="fixing" {{ $repair->record->status === 'fixing' ? 'selected' : '' }}>Fixing (In Progress)</option>
+                        <option value="good" {{ $repair->record->status === 'good' ? 'selected' : '' }}>Good (Completed)</option>
+                    </select>
+                    <small style="color: #000; font-size: 13px; display: block; margin-top: 5px;">
+                        Change status to "Fixing" when you start the repair, and "Good" when completed.
+                    </small>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <button type="submit" class="btn">Update Status</button>
+                    <a href="{{ route('admin.repairs.index') }}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

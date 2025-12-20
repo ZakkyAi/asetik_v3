@@ -45,7 +45,7 @@ class ProductController extends Controller
         
         Product::create($validated);
 
-        return redirect()->route('products.index')->with('success', 'Product created successfully!');
+        return redirect()->route('admin.products.index')->with('success', 'Product created successfully!');
     }
 
     /**
@@ -94,7 +94,7 @@ class ProductController extends Controller
 
         $product->update($validated);
 
-        return redirect()->route('products.index')->with('success', 'Product updated successfully!');
+        return redirect()->route('admin.products.index')->with('success', 'Product updated successfully!');
     }
 
     /**
@@ -106,12 +106,12 @@ class ProductController extends Controller
 
         // Check if product has any records
         if ($product->records()->count() > 0) {
-            return redirect()->route('products.index')
+            return redirect()->route('admin.products.index')
                 ->with('error', 'Cannot delete product "' . $product->name . '" because it has ' . $product->records()->count() . ' asset record(s). Please delete the records first.');
         }
 
         $product->delete();
 
-        return redirect()->route('products.index')->with('success', 'Product deleted successfully!');
+        return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully!');
     }
 }

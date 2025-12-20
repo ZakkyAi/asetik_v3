@@ -56,7 +56,7 @@
             background: white;
             color: #667eea;
             text-decoration: none;
-            border-radius: 50px;
+            
             font-weight: 600;
             font-size: 18px;
             transition: all 0.3s;
@@ -78,7 +78,7 @@
         .feature {
             background: rgba(255, 255, 255, 0.1);
             padding: 20px;
-            border-radius: 15px;
+            
             backdrop-filter: blur(10px);
         }
 
@@ -95,26 +95,26 @@
 </head>
 <body>
     <div class="container">
-        <div class="logo">🔐</div>
+        <div class="logo"></div>
         <h1>Asetik</h1>
         <p>IT Asset Management System</p>
         <a href="{{ url('/login') }}" class="btn">Get Started</a>
 
         <div class="features">
             <div class="feature">
-                <div class="feature-icon">👥</div>
+                <div class="feature-icon"></div>
                 <div class="feature-text">User Management</div>
             </div>
             <div class="feature">
-                <div class="feature-icon">💻</div>
+                <div class="feature-icon"></div>
                 <div class="feature-text">Product Catalog</div>
             </div>
             <div class="feature">
-                <div class="feature-icon">📋</div>
+                <div class="feature-icon"></div>
                 <div class="feature-text">Asset Tracking</div>
             </div>
             <div class="feature">
-                <div class="feature-icon">🔧</div>
+                <div class="feature-icon"></div>
                 <div class="feature-text">Repair Management</div>
             </div>
         </div>
